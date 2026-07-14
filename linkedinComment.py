@@ -1,6 +1,5 @@
 from playwright.sync_api import sync_playwright
 import time
-import help
 EMAIL_TEXT = input("Enter the comment text you want to post: ")
 SEARCH_QUERY = input("Enter your LinkedIn search query: ")
 
@@ -15,8 +14,6 @@ with sync_playwright() as p:
     
     page.goto(f"https://www.linkedin.com/search/results/content/?keywords={SEARCH_QUERY}")
 
-    #https://www.linkedin.com/search/results/content/?keywords=%22fresher&origin=FACETED_SEARCH&sid=Fg5&sortBy=%22date_posted%22
-
     time.sleep(5)
 
     
@@ -24,7 +21,7 @@ with sync_playwright() as p:
 
     print(f"Found {len(posts)} posts")
 
-    for post in posts[:5]:
+    for post in posts[::]:
         try:
             comment_button = post.locator("button[aria-label*='Comment']")
             if comment_button.count() > 0:
@@ -35,12 +32,12 @@ with sync_playwright() as p:
                 comment_box.click()
                 comment_box.fill(EMAIL_TEXT)
                 
-                print("commented")
+                print("Filled comment")
                 time.sleep(2)
 
-                help.helper()
 
-                print("Posted")
+
+                print("Commented on post")
                 time.sleep(10) 
 
         except Exception as e:
